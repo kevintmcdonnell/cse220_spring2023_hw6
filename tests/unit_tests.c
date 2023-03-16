@@ -15,7 +15,7 @@ int run_using_system(char *test_name, char *args) {
     char cmd[500];
     sprintf(test_log_outfile, "%s/%s.log", TEST_OUTPUT_DIR, test_name);
 #if defined(__linux__)
-    sprintf(cmd, "ulimit -f 50; valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --error-exitcode=37 ./bin/hw6 %s >> %s 2>&1",
+    sprintf(cmd, "ulimit -f 300; ulimit -t 5; valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --error-exitcode=37 ./bin/hw6 %s >> %s 2>&1",
 	    args, test_log_outfile);
 #else
     cr_log_warn("Skipping valgrind tests. Run tests on Linux or GitHub for full output.\n");
@@ -30,8 +30,7 @@ int run_using_system_no_valgrind(char *test_name, char *args) {
 
     char cmd[500];
     sprintf(test_log_outfile, "%s/%s.log", TEST_OUTPUT_DIR, test_name);
-    sprintf(cmd, "ulimit -f 50; ./bin/hw6 %s >> %s 2>&1", args, test_log_outfile);
-    //printf("%s\n", cmd);
+    sprintf(cmd, "ulimit -f 300; ulimit -t 5; ./bin/hw6 %s >> %s 2>&1", args, test_log_outfile);
     return system(cmd);
 }
 
